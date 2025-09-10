@@ -1,0 +1,38 @@
+<head>
+    <title>OpenCanvas</title>
+    <script src="../scripts/auth.lua" />
+    
+    <font name="main" src="../W95font.woff2" />
+
+    <style>
+        p { font-main }
+    </style>
+</head>
+
+<body style="bg-[#bdbdbd] py-1 px-1">
+    <div style="w-full bg-[#000477] p-1">
+        <p style="font-main text-[#ffffff] text-xs">Welcome To OpenCanvas</p>
+    </div>
+
+    <div style="flex flex-col gap-0 p-4 bg-[#f8fafc] w-full h-full">
+        <div style="flex">
+            <div style="">
+                <p style="text-xs">User name: </p>
+                <p style="text-xs">Password: </p>
+            </div>
+            <div style="flex flex-col">
+                <input id="username-input" type="text" maxlength="16" placeholder=" " required="true" style="h-1 text-xs" />
+                <input id="password-input" type="password" maxlength="128" placeholder=" " required="true" style="h-1 text-xs" />
+            </div>
+        </div>
+        <p id="auth-error" style="text-red-500 text-sm"></p>
+        <div style="flex gap-2">
+            <button id="login-btn" type="submit" style="bg-[#4ade80] text-white py-2 rounded-[0px]">
+                Login
+            </button>
+            <button id="register-btn" type="submit" style="font-main bg-[#4ade80] text-white py-2 rounded-[0px]">
+                Register
+            </button>
+        </div>
+    </div>
+</body>
