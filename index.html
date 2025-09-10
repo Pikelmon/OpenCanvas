@@ -1,0 +1,45 @@
+<head>
+    <title>OpenCanvas</title>
+    <script src="scripts/index.lua" />
+    
+    <font name="main" src="W95font.woff2" />
+
+    <style>
+        p { font-main }
+    </style>
+</head>
+
+<body style="bg-[#bdbdbd] py-1 px-1">
+    <div id="cont" style="w-full h-full">
+        <div style="w-full bg-[#000477] p-1">
+            <p style="font-main text-[#ffffff] text-xs">OpenCanvas - Paint</p>
+        </div>
+        <div style="flex px-2 gap-2 text-xs h-1">
+            <p style="">File</p>
+            <p style="">Edit</p>
+            <p style="">View</p>
+            <p style="">Image</p>
+            <p style="">Options</p>
+            <p style="">Help</p>
+        </div>
+    </div>
+
+    <div>
+        <div id="fake-canvas" style="w-full h-50 bg-[#f7b500]"></div> <!--This is used to determine the size of the canvas. NEED TO REPLACE h-10 WITH h-full ONCE HEIGHT FULL BUG IS FIXED-->
+        <div id="content-container" style="flex gap-10">
+            <!--Info/Settings Tab-->
+            <div>
+                <!--Color Picker-->
+                <div style="flex">
+                    <input id="color-input" type="text" maxlength="7" placeholder="#ff0000" style="text-xs" />
+                </div>
+                <!--Info-->
+                <div style="flex gap-3">
+                    <p style="text-xs">Balance:</p>
+                    <p id="balance" style="text-xs">loading...</p>
+                    <p id="balance-timer" style="text-xs"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
