@@ -74,13 +74,13 @@ end
 login_btn:on('click', function()
     local success = login(username_input.value, password_input.value)
     if success then
-        gurt.location.goto("")
+        gurt.location.goto("opencanvas.io")
     end
 end)
 
 register_btn:on('click', function()
     local success = register(username_input.value, password_input.value)
     if success then
-        gurt.location.goto("")
+        gurt.location.goto("opencanvas.io")
     end
 end)
