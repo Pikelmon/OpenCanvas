@@ -181,7 +181,7 @@ function init()
     -- Redirect if not logged in
     local token = gurt.crumbs.get("token")
     if not token then
-        gurt.location.goto("opencanvas.io/auth")
+        gurt.location.goto("/auth")
         return
     end
 
