@@ -92,8 +92,10 @@ local function fetch_balance()
     if response:ok() then
         return response:json()
     else
-        gurt.crumbs.set({name='token', value=''})
-        gurt.location.goto("/auth")
+        if response.status == 409 then
+            gurt.crumbs.set({name='token', value=''})
+            gurt.location.goto("/auth")
+        end
     end
 end
 
@@ -120,8 +122,12 @@ local function update_pixel(x, y, color)
             set_local_balance(json.pixel_balance)
         end
     else
-        gurt.crumbs.set({name='token', value=''})
-        gurt.location.goto("/auth")
+        if response.status == 409 then
+            gurt.crumbs.set({name='token', value=''})
+            gurt.location.goto("/auth")
+        else
+            trace.log('Placing pixel has returned error'.. tostring(response.status))
+        end
     end
 end
 
@@ -243,10 +249,14 @@ local function init()
 
         render_canvas(fetch_canvas())
         local balance_result = fetch_balance()
-        set_local_balance(balance_result.pixel_balance)
+        if balance_result then
+            set_local_balance(balance_result.pixel_balance)
 
-        seconds_until_next_pixel = balance_result.seconds_until_next_pixel
-        start_balance_interval()
+            seconds_until_next_pixel = balance_result.seconds_until_next_pixel
+            start_balance_interval()
+        else
+            trace.log('Fetching balance returned error')
+        end
 
         trace.log('Initialization successfull, connecting to Supabase.')
         connect_to_supabase()
