@@ -115,66 +115,6 @@ local function init()
             COLOR = vec4(color, 1.0);
         }
     ]])
-
-    delay(function()
-        local canvas_bar_size = fake_canvas.size.height - 5 -- -5 is for the border
-        fake_canvas:hide()
-
-        trace.log(canvas_bar_size)
-    
-        local canvas = gurt.create("canvas", {
-            id = "canvas",
-            style = "w-[" .. canvas_bar_size .. "px] h-[" .. canvas_bar_size .. "px]"
-        })
-
-        canvas:withContext('shader'):source([[
-            shader_type canvas_item;
-
-            uniform float pixel_size : hint_range(4.0, 64.0) = 31.0;
-            uniform float corruption_speed : hint_range(0.1, 10.0) = 1.0;
-            uniform vec3 heart_color : source_color = vec3(1.0, 0.2, 0.4); // pink-red heart
-
-            float rand(vec2 co) {
-                return fract(sin(dot(co, vec2(12.9898,78.233))) * 43758.5453);
-            }
-
-            float heart_shape(vec2 p) {
-                p = (p - vec2(0.4825, 0.55)) * 2.5; 
-                p.y *= -1.0; // flip so it points up
-                float a = p.x * p.x + p.y * p.y - 1.0;
-                return a * a * a - p.x * p.x * p.y * p.y * p.y;
-            }
-
-            void fragment() {
-                vec2 pixel_uv = floor(UV * pixel_size) / pixel_size;
-
-                float in_heart = step(0.0, -heart_shape(pixel_uv));
-
-                float t = TIME * corruption_speed;
-
-                float corruption_phase = floor(t + rand(pixel_uv) * 1000.0);
-
-                vec3 random_col = vec3(
-                    rand(pixel_uv + vec2(corruption_phase, 1.0)),
-                    rand(pixel_uv + vec2(corruption_phase, 2.0)),
-                    rand(pixel_uv + vec2(corruption_phase, 3.0))
-                );
-
-                float heal = fract(t + rand(pixel_uv) * 10.0); // cycles 0→1
-                vec3 color = mix(random_col, heart_color, heal);
-
-                color *= in_heart;
-
-                COLOR = vec4(color, in_heart);
-            }
-
-        ]])
-
-        canvas_container:append(canvas)
-
-        end, 1)
-
-
 end
 
 init()

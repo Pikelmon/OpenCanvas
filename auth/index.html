@@ -4,7 +4,6 @@
     
     <font name="main" src="../fonts/W95font.woff2" />
     <font name="main-bold" src="../fonts/W95font-Bold.woff2" />
-    <font name="inter-black" src="../fonts/Inter-Black.woff2" />
 
     <style>
         p { font-main }
@@ -19,10 +18,10 @@
 
         <div style="bg-[#fcfcfa] w-full h-1/2">
             <div style="h-full"></div>
-            <div style="flex px-16 gap-10">
+            <div style="flex px-16 gap-32">
                 <div style="">
-                    <h2 style="font-inter-black text-[#000000]">OpenCanvas</h2>
-                    <h4 style="font-inter-black text-[#000000] text-right">By Pikelmon</h4>
+                    <h2 style="font-sans text-[#000000]">OpenCanvas</h2>
+                    <h4 style="font-sans text-[#000000] text-right">By Pikelmon</h4>
                     <div style="border-t-1 border-l-1 border-[#a0a0a0]">
                         <div style="border-t-1 border-l-1 border-[#696969]">
                             <div style="border-b-1 border-r-1 border-[#ffffff]">
@@ -36,20 +35,8 @@
                         </div>
                     </div>
                 </div>
-
-                <div style="border-t-1 border-l-1 border-[#7f7f7f]">
-                    <div style="border-t-1 border-l-1 border-[#111111]">
-                        <div style="border-t-1 border-l-1 border-[#7f8281]">
-                            <div style="border-b-2 border-r-2 border-[#dbdbdb]">
-                                <div id="canvas-container"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="fake-canvas" style="h-full"></div>
-
             </div>
+            
             <div style="h-full"></div>
         </div>
 
@@ -92,7 +79,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p id="auth-error" style="text-red-500 text-sm"></p>
+                        <p id="auth-error" style="text-red-500 font-main text-xs"></p>
                         <div style="flex gap-2">
                             <div style="border-t-1 border-l-1 border-[#a3a09b] rounded-[1px]">
                                 <div style="border-t-1 border-l-1 border-[#777570]">
@@ -116,6 +103,7 @@
                     </div>
                 </div>
 
+                <div style="h-16"></div>
                 <div style="w-full h-full"></div>
             </div>
         </div>

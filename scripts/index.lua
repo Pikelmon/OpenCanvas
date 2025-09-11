@@ -8,12 +8,13 @@ local BACKEND_URL = "https://open-canvas-backend.vercel.app/"
 local CANVAS_SIZE = 80
 
 -- Variables
-local ws = WebSocket:new("wss://" .. SUPABASE_URL .. "/realtime/v1?apikey=" .. SUPABASE_KEY)
+local ws
 local canvas_display_size = 0
 local pixel_balance = 0
 local seconds_until_next_pixel = 60
 local balance_interval_id
 local canvas_display
+local ws_url = "wss://" .. SUPABASE_URL .. "/realtime/v1?apikey=" .. SUPABASE_KEY
 
 -- Elements
 local fake_canvas = gurt.select("#fake-canvas")
@@ -118,7 +119,52 @@ local function ws_join_channel()
         payload = {},
         ref = "1"
     }))
-    trace.log("Sent join message")
+    trace.log("[Supabase WS]: Sent Join Message")
+end
+
+local function ws_send_heartbeat()
+    ws:send(JSON.stringify({
+        topic = "phoenix",
+        event = "heartbeat",
+        payload = {},
+        ref = "0"
+    }))
+    trace.log("[Supabase WS]: Sent Heartbeat")
+end
+
+local function connect_to_supabase()
+    ws = WebSocket:new(ws_url)
+
+    ws:on('open', function()
+        trace.log('[Supabase WS]: Connected')
+        ws_join_channel()
+    end)
+
+    ws:on('message', function(event)
+        if event["data"] then
+            local data = JSON.parse(event["data"])
+            if data["payload"] then
+                local payload = data["payload"]
+                if payload["record"] then
+                    local record = payload["record"]
+                    render_pixel(record["x"], record["y"], record["color"])
+                    trace.log('[Supabase WS]: Recieved Pixel: '.. JSON.stringify(record))
+                end
+            end
+        end
+    end)
+
+    ws:on('close', function()
+        trace.log("[Supabase WS]: Closed")
+    end)
+
+    ws:on('error', function(event)
+        trace.log('[Supabase WS]: Error: ' .. (event.message or 'Unknown error'))
+    end)
+
+    local interval_id = setInterval(function()
+        ws_send_heartbeat()
+    end, 1000 * 30)
 end
 
 -- Balance Timer
@@ -138,6 +184,7 @@ local function start_balance_interval()
     end, 1000)
 end
 
+-- Utils
 local function delay(callback, ms)
     local interval_id
     interval_id = setInterval(function()
@@ -160,22 +207,7 @@ function on_canvas_display_click(mouse_pos)
     update_pixel(canvas_x, canvas_y, color)
 end
 
-ws:on('open', function()
-    trace.log('Websocket connection established')
-    ws_join_channel()
-end)
 
-ws:on("message", function(data)
-    trace.log("Received: " .. data)
-end)
-
-ws:on("close", function(code, reason)
-    trace.log("WebSocket closed: " .. code .. " - " .. reason)
-end)
-
-ws:on("error", function(error)
-    trace.log("WebSocket error: " .. error)
-end)
 
 -- Initialization
 local function init()
@@ -201,6 +233,9 @@ local function init()
 
         seconds_until_next_pixel = balance_result.seconds_until_next_pixel
         start_balance_interval()
+
+        trace.log('Initialization successfull, connecting to Supabase.')
+        connect_to_supabase()
     end, 1)
 end
 
