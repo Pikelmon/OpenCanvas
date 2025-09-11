@@ -75,7 +75,11 @@ local function fetch_canvas()
             Accept = "application/json"
         }
     })
-    return response:json()
+    if response:ok() then
+        return response:json()
+    else
+        return {}
+    end
 end
 
 local function fetch_balance()
@@ -84,7 +88,13 @@ local function fetch_balance()
         headers = { ["Content-Type"] = "application/json" },
         body = JSON.stringify({ token = gurt.crumbs.get("token") })
     })
-    return response:json()
+
+    if response:ok() then
+        return response:json()
+    else
+        gurt.crumbs.set({name='token', value=''})
+        gurt.location.goto("/auth")
+    end
 end
 
 local function update_pixel(x, y, color)
@@ -101,14 +111,18 @@ local function update_pixel(x, y, color)
             color = color
         })
     })
-    local json = response:json()
 
-    seconds_until_next_pixel = json.seconds_until_next_pixel
-    if pixel_balance ~= json.pixel_balance then
-        set_local_balance(json.pixel_balance)
+    if response:ok() then
+        local json = response:json()
+
+        seconds_until_next_pixel = json.seconds_until_next_pixel
+        if pixel_balance ~= json.pixel_balance then
+            set_local_balance(json.pixel_balance)
+        end
+    else
+        gurt.crumbs.set({name='token', value=''})
+        gurt.location.goto("/auth")
     end
-
-    return response:ok()
 end
 
 -- WebSocket Functions
@@ -212,7 +226,7 @@ end
 -- Initialization
 local function init()
     local token = gurt.crumbs.get("token")
-    if not token then
+    if not token or token=='' then
         gurt.location.goto("/auth")
         return
     end
