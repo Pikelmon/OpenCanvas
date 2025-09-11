@@ -2,37 +2,122 @@
     <title>OpenCanvas</title>
     <script src="../scripts/auth.lua" />
     
-    <font name="main" src="../W95font.woff2" />
+    <font name="main" src="../fonts/W95font.woff2" />
+    <font name="main-bold" src="../fonts/W95font-Bold.woff2" />
+    <font name="inter-black" src="../fonts/Inter-Black.woff2" />
 
     <style>
         p { font-main }
     </style>
 </head>
 
-<body style="bg-[#bdbdbd] py-1 px-1">
-    <div style="w-full bg-[#000477] p-1">
-        <p style="font-main text-[#ffffff] text-xs">Welcome To OpenCanvas</p>
-    </div>
-
-    <div style="flex flex-col gap-0 p-4 bg-[#f8fafc] w-full h-full">
-        <div style="flex">
-            <div style="">
-                <p style="text-xs">User name: </p>
-                <p style="text-xs">Password: </p>
-            </div>
-            <div style="flex flex-col">
-                <input id="username-input" type="text" maxlength="16" placeholder=" " required="true" style="h-1 text-xs" />
-                <input id="password-input" type="password" maxlength="128" placeholder=" " required="true" style="h-1 text-xs" />
-            </div>
+<body style="bg-[#bdbdbd] p-1">
+    <div style="h-full w-full">
+        <div style="w-full bg-[#000477] p-1">
+            <p style="text-white text-xs">Log On to OpenCanvas</p>
         </div>
-        <p id="auth-error" style="text-red-500 text-sm"></p>
-        <div style="flex gap-2">
-            <button id="login-btn" type="submit" style="bg-[#4ade80] text-white py-2 rounded-[0px]">
-                Login
-            </button>
-            <button id="register-btn" type="submit" style="font-main bg-[#4ade80] text-white py-2 rounded-[0px]">
-                Register
-            </button>
+
+        <div style="bg-[#fcfcfa] w-full h-1/2">
+            <div style="h-full"></div>
+            <div style="flex px-16 gap-10">
+                <div style="">
+                    <h2 style="font-inter-black text-[#000000]">OpenCanvas</h2>
+                    <h4 style="font-inter-black text-[#000000] text-right">By Pikelmon</h4>
+                    <div style="border-t-1 border-l-1 border-[#a0a0a0]">
+                        <div style="border-t-1 border-l-1 border-[#696969]">
+                            <div style="border-b-1 border-r-1 border-[#ffffff]">
+                                <div style="border-b-1 border-r-1 border-[#e3e3e3] p-1">
+                                    <div style="gap-2 w-full flex">
+                                        <img src="https://i.ibb.co/XrHz3d3W/logo.png" style="w-8 h-8" />
+                                        <p style="font-main-bold text-[#000000] text-xs text-right">Hosted on <a href="gurt://arson.dev">ArsonFlare</p></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="border-t-1 border-l-1 border-[#7f7f7f]">
+                    <div style="border-t-1 border-l-1 border-[#111111]">
+                        <div style="border-t-1 border-l-1 border-[#7f8281]">
+                            <div style="border-b-2 border-r-2 border-[#dbdbdb]">
+                                <div id="canvas-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="fake-canvas" style="h-full"></div>
+
+            </div>
+            <div style="h-full"></div>
+        </div>
+
+        <canvas id="gradient-bar" style="w-full h-6"></canvas>
+
+        <div style="flex p-4 bg-[#d4d0c8] h-full">
+            <div style="px-16">
+                <div style="w-full h-full"></div>
+
+                <div style="flex gap-8">
+                    <div style="h-full">
+                        <div style="h-full">
+                            <div style="h-full"></div>
+                            <p style="text-xs">User name: </p>
+                            <div style="h-full"></div>
+                        </div>
+                        <div style="h-full">
+                            <div style="h-full"></div>
+                            <p style="text-xs">Password: </p>
+                            <div style="h-full"></div>
+                        </div>
+                        <div style="h-full"></div>
+                    </div>
+                    <div style="">
+                        <div style="border-t-1 border-l-1 border-[#a0a0a0]">
+                            <div style="border-t-1 border-l-1 border-[#696969]">
+                                <div style="border-b-1 border-r-1 border-[#ffffff]">
+                                    <div style="border-b-1 border-r-1 border-[#e3e3e3] flex">
+                                        <input id="username-input" type="text" maxlength="16" placeholder=" " style="font-main h-4 text-xs border-0 rounded-[0px] bg-[#ffffff]" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border-t-1 border-l-1 border-[#a0a0a0]">
+                            <div style="border-t-1 border-l-1 border-[#696969]">
+                                <div style="border-b-1 border-r-1 border-[#ffffff]">
+                                    <div style="border-b-1 border-r-1 border-[#e3e3e3] flex">
+                                        <input id="password-input" type="password" maxlength="128" placeholder=" " style="h-4 w-64 text-xs border-0 rounded-[0px] bg-[#ffffff]" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p id="auth-error" style="text-red-500 text-sm"></p>
+                        <div style="flex gap-2">
+                            <div style="border-t-1 border-l-1 border-[#a3a09b] rounded-[1px]">
+                                <div style="border-t-1 border-l-1 border-[#777570]">
+                                    <div style="border-b-1 border-r-1 border-[#5e5e5e] rounded-[1px]">
+                                        <div style="border-b-1 border-r-1 border-[#595959]">
+                                            <button id="login-btn" type="submit" style="font-main bg-[#e0ddd7] text-black py-1 rounded-[0px] w-[100px] h-[10px]">Login</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="border-t-1 border-l-1 border-[#a3a09b] rounded-[1px]">
+                                <div style="border-t-1 border-l-1 border-[#777570]">
+                                    <div style="border-b-1 border-r-1 border-[#5e5e5e] rounded-[1px]">
+                                        <div style="border-b-1 border-r-1 border-[#595959]">
+                                            <button id="register-btn" type="submit" style="font-main bg-[#e0ddd7] text-black py-1 w-[100px] h-[0px]">Register</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="w-full h-full"></div>
+            </div>
         </div>
     </div>
 </body>
